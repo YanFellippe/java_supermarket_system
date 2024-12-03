@@ -31,6 +31,7 @@ Este é um sistema desenvolvido em Java, utilizando o NetBeans IDE, para gerenci
 - **Bibliotecas adicionais**: 
   - JasperReports para geração de relatórios
   - JCalendar para seleção de datas
+  - JSwing para criação de interfaces gráficas para aplicações
 
 ---
 
