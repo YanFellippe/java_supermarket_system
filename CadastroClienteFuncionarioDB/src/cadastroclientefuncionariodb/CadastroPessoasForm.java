@@ -182,7 +182,7 @@ public class CadastroPessoasForm extends javax.swing.JInternalFrame {
     private void boxSituacaoItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_boxSituacaoItemStateChanged
         if(boxSituacao.getSelectedItem().equals("Ativo")){
            situacao = "A";
-       } else{
+        } else{
            situacao = "B";
        }
     }//GEN-LAST:event_boxSituacaoItemStateChanged

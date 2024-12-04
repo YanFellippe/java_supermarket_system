@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 public class CadVenda extends javax.swing.JInternalFrame {
 
@@ -95,6 +96,12 @@ public class CadVenda extends javax.swing.JInternalFrame {
 
         jLabel2.setText("TOTAL VENDA:");
 
+        cupom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cupomActionPerformed(evt);
+            }
+        });
+
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -146,8 +153,18 @@ public class CadVenda extends javax.swing.JInternalFrame {
         });
 
         btnFinalizar.setText("Finalizar");
+        btnFinalizar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnFinalizarMouseClicked(evt);
+            }
+        });
 
         btnCancelarVenda.setText("Cancelar Venda");
+        btnCancelarVenda.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnCancelarVendaMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -249,10 +266,13 @@ public class CadVenda extends javax.swing.JInternalFrame {
             Connection con = BancoClass.conexaoBanco();
             String sql = "INSERT INTO tb_item_venda(produto, preco, quantidade, total, atendente, cliente, cancelado) VALUES (?,?,?,?,?,?,?);";
             PreparedStatement stmt = con.prepareStatement(sql);
+            double valorPreco = Double.parseDouble(preco.getText());
+            int valorQtd = Integer.parseInt(qtd.getText());
+            double valorTotal = valorPreco * valorQtd;
             stmt.setString(1, produtos);
             stmt.setString(2, preco.getText());
             stmt.setString(3, qtd.getText());
-            stmt.setString(4, preco.getText());
+            stmt.setDouble(4, valorTotal);
             stmt.setString(5, funcionarios);
             stmt.setString(6, clientes);
             stmt.setString(7, calcelado);
@@ -316,6 +336,64 @@ public class CadVenda extends javax.swing.JInternalFrame {
             clientes = " ";
         }
     }//GEN-LAST:event_clienteBoxItemStateChanged
+
+    private void btnFinalizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnFinalizarMouseClicked
+        try {
+            Connection con = BancoClass.conexaoBanco();
+            String sql = "UPDATE venda SET situacao = 'F', valor_total = ? WHERE id_venda = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            DefaultTableModel tabelaModelo = (DefaultTableModel) table.getModel();
+            double total = 0.0;
+            for (int i = 0; i < tabelaModelo.getRowCount(); i++) {
+                total += Double.parseDouble(tabelaModelo.getValueAt(i, 4).toString());
+            }
+            stmt.setDouble(1, total);
+            stmt.setString(2, id_vendas);
+            stmt.executeUpdate();
+
+            totVenda.setText(String.format("%.2f", total));
+            JOptionPane.showMessageDialog(this, "Venda finalizada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+
+            stmt.close();
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CadVenda.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Erro ao finalizar a venda.", "Erro", JOptionPane.ERROR_MESSAGE);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Erro no cálculo do total. Verifique os valores dos itens.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnFinalizarMouseClicked
+
+    private void btnCancelarVendaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCancelarVendaMouseClicked
+        int confirm = JOptionPane.showConfirmDialog(this, "Tem certeza de que deseja cancelar esta venda?", "Confirmação", JOptionPane.YES_NO_OPTION);
+
+    if (confirm == JOptionPane.YES_OPTION) {
+        try {
+            Connection con = BancoClass.conexaoBanco();
+            String sql = "UPDATE venda SET situacao = 'S' WHERE id_venda = ?";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, id_vendas);
+            stmt.executeUpdate();
+
+            JOptionPane.showMessageDialog(this, "Venda cancelada com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+
+            DefaultTableModel tabelaModelo = (DefaultTableModel) table.getModel();
+            tabelaModelo.setRowCount(0);
+            totVenda.setText("");
+            cupom.setText("");
+
+            stmt.close();
+            con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CadVenda.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Erro ao cancelar a venda.", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    }//GEN-LAST:event_btnCancelarVendaMouseClicked
+
+    private void cupomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cupomActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cupomActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
