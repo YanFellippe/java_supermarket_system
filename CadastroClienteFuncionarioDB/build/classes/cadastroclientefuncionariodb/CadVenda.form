@@ -66,7 +66,7 @@
                                   <Component id="produtoBox" alignment="0" max="32767" attributes="0"/>
                                   <Component id="qtd" alignment="0" max="32767" attributes="0"/>
                                   <Component id="preco" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="id_venda" max="32767" attributes="0"/>
+                                  <Component id="codigo" max="32767" attributes="0"/>
                                   <Component id="funcionarioBox" alignment="0" max="32767" attributes="0"/>
                                   <Component id="clienteBox" alignment="0" min="-2" pref="292" max="-2" attributes="0"/>
                               </Group>
@@ -91,7 +91,7 @@
           <Group type="102" alignment="1" attributes="0">
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="id_venda" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="codigo" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -168,7 +168,7 @@
           <Properties>
             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
               <Table columnCount="8" rowCount="0">
-                <Column editable="true" title="ID" type="java.lang.Object"/>
+                <Column editable="true" title="C&#xf3;digo" type="java.lang.Object"/>
                 <Column editable="true" title="Produto" type="java.lang.Object"/>
                 <Column editable="true" title="Pre&#xe7;o" type="java.lang.Object"/>
                 <Column editable="true" title="Quantidade" type="java.lang.Object"/>
@@ -184,7 +184,7 @@
     </Container>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>
-        <Property name="text" type="java.lang.String" value="ID"/>
+        <Property name="text" type="java.lang.String" value="C&#xf3;digo"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
@@ -212,7 +212,7 @@
         <Property name="text" type="java.lang.String" value="Nome Cliente"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="id_venda">
+    <Component class="javax.swing.JTextField" name="codigo">
     </Component>
     <Component class="javax.swing.JTextField" name="preco">
     </Component>
@@ -240,12 +240,15 @@
     <Component class="javax.swing.JComboBox" name="funcionarioBox">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="5">
+          <StringArray count="8">
             <StringItem index="0" value=" "/>
-            <StringItem index="1" value="@B&#xe1;rbara"/>
-            <StringItem index="2" value="@Elaine"/>
-            <StringItem index="3" value="@Jubileu"/>
-            <StringItem index="4" value="@Oreia Seca"/>
+            <StringItem index="1" value="@Jo&#xe3;o Silva"/>
+            <StringItem index="2" value="@Maria Oliveira"/>
+            <StringItem index="3" value="@Carlos Santos"/>
+            <StringItem index="4" value="@Ana Paula"/>
+            <StringItem index="5" value="@Rafael Lima"/>
+            <StringItem index="6" value="@Pedro Santos"/>
+            <StringItem index="7" value="@Roberto Lima"/>
           </StringArray>
         </Property>
       </Properties>
@@ -259,12 +262,13 @@
     <Component class="javax.swing.JComboBox" name="clienteBox">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="5">
-            <StringItem index="0" value="Douglas"/>
-            <StringItem index="1" value="Rafael"/>
-            <StringItem index="2" value="Ruan"/>
-            <StringItem index="3" value="Talisson"/>
-            <StringItem index="4" value=" "/>
+          <StringArray count="6">
+            <StringItem index="0" value=" "/>
+            <StringItem index="1" value="Fernanda Rocha"/>
+            <StringItem index="2" value="Marina Dias"/>
+            <StringItem index="3" value="Ricardo Pinto"/>
+            <StringItem index="4" value="Juliana Martins"/>
+            <StringItem index="5" value="F&#xe1;bio Nascimento"/>
           </StringArray>
         </Property>
       </Properties>
