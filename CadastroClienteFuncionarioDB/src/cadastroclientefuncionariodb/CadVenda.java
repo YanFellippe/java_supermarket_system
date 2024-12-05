@@ -8,13 +8,15 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 public class CadVenda extends javax.swing.JInternalFrame {
 
-    String produtos;
+    String produto;
     String funcionarios;
     String clientes;
     String situacaoVenda;
@@ -36,9 +38,9 @@ public class CadVenda extends javax.swing.JInternalFrame {
         }
         
         if(situacaoVenda.equals("P")){
-            String sql2 = "SELECT * FROM tb_item_venda WHERE id_venda = ?;";
+            String sql2 = "String sql = SELECT * FROM tb_item_venda WHERE codigo = ?;";
             PreparedStatement stmt2 = con.prepareStatement(sql2);
-            stmt2.setString(1, id_vendas);
+            stmt2.setString(1, codigo.getText());
             ResultSet rs2 = stmt2.executeQuery();
             
             DefaultTableModel tabelaModelo = (DefaultTableModel) table.getModel();
@@ -76,7 +78,7 @@ public class CadVenda extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        id_venda = new javax.swing.JTextField();
+        codigo = new javax.swing.JTextField();
         preco = new javax.swing.JTextField();
         qtd = new javax.swing.JTextField();
         produtoBox = new javax.swing.JComboBox<>();
@@ -107,12 +109,12 @@ public class CadVenda extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "ID", "Produto", "Preço", "Quantidade", "Total", "Funcionário", "Cliente", "Cancelado"
+                "Código", "Produto", "Preço", "Quantidade", "Total", "Funcionário", "Cliente", "Cancelado"
             }
         ));
         jScrollPane1.setViewportView(table);
 
-        jLabel3.setText("ID");
+        jLabel3.setText("Código");
 
         jLabel4.setText("Produto");
 
@@ -131,14 +133,14 @@ public class CadVenda extends javax.swing.JInternalFrame {
             }
         });
 
-        funcionarioBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "@Bárbara", "@Elaine", "@Jubileu", "@Oreia Seca" }));
+        funcionarioBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "@João Silva", "@Maria Oliveira", "@Carlos Santos", "@Ana Paula", "@Rafael Lima", "@Pedro Santos", "@Roberto Lima" }));
         funcionarioBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 funcionarioBoxItemStateChanged(evt);
             }
         });
 
-        clienteBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Douglas", "Rafael", "Ruan", "Talisson", " " }));
+        clienteBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "Fernanda Rocha", "Marina Dias", "Ricardo Pinto", "Juliana Martins", "Fábio Nascimento" }));
         clienteBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 clienteBoxItemStateChanged(evt);
@@ -204,7 +206,7 @@ public class CadVenda extends javax.swing.JInternalFrame {
                                     .addComponent(produtoBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(qtd, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(preco, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(id_venda)
+                                    .addComponent(codigo)
                                     .addComponent(funcionarioBox, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(clienteBox, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
@@ -220,7 +222,7 @@ public class CadVenda extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(id_venda, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -264,98 +266,107 @@ public class CadVenda extends javax.swing.JInternalFrame {
     private void btnCadastrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCadastrarMouseClicked
         try {
             Connection con = BancoClass.conexaoBanco();
-            String sql = "INSERT INTO tb_item_venda(produto, preco, quantidade, total, atendente, cliente, cancelado) VALUES (?,?,?,?,?,?,?);";
+            String sql = "INSERT INTO tb_item_venda(id_venda, produto, preco, quantidade, total, atendente, cliente, cancelado) VALUES (?,?,?,?,?,?,?,?);";
             PreparedStatement stmt = con.prepareStatement(sql);
             double valorPreco = Double.parseDouble(preco.getText());
             int valorQtd = Integer.parseInt(qtd.getText());
             double valorTotal = valorPreco * valorQtd;
-            stmt.setString(1, produtos);
-            stmt.setString(2, preco.getText());
-            stmt.setString(3, qtd.getText());
-            stmt.setDouble(4, valorTotal);
-            stmt.setString(5, funcionarios);
-            stmt.setString(6, clientes);
-            stmt.setString(7, calcelado);
+            stmt.setString(1, codigo.getText());
+            stmt.setString(2, produto);
+            stmt.setString(3, preco.getText());
+            stmt.setString(4, qtd.getText());
+            stmt.setDouble(5, valorTotal);
+            stmt.setString(6, funcionarios);
+            stmt.setString(7, clientes);
+            stmt.setString(8, calcelado);
             
             String sql2 = "SELECT * FROM tb_item_venda WHERE id_venda = ?;";
             PreparedStatement stmt2 = con.prepareStatement(sql2);
-            stmt2.setString(1, id_vendas);
+            stmt2.setString(1, codigo.getText());
             ResultSet rs2 = stmt2.executeQuery();
             
             DefaultTableModel tabelaModelo = (DefaultTableModel) table.getModel();
             tabelaModelo.setNumRows(0);
             while(rs2.next()){
-                Object[] dados = {rs2.getString("codigo"), rs2.getString("produto"), rs2.getString("preco")
+                Object[] dados = {rs2.getString("id_venda"), rs2.getString("produto"), rs2.getString("preco")
                         ,rs2.getString("quantidade"), rs2.getString("total")
                         ,rs2.getString("atendente"), rs2.getString("cliente"), rs2.getString("cancelado")};
                 tabelaModelo.addRow(dados);
             }
+            
+            codigo.setText(null);
+            produtoBox.setSelectedItem(" ");
+            preco.setText(null);
+            qtd.setText(null);
+            funcionarioBox.setSelectedItem(" ");
+            clienteBox.setSelectedItem(" ");
+            
         } catch (SQLException ex) {
             Logger.getLogger(CadVenda.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnCadastrarMouseClicked
 
     private void produtoBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_produtoBoxItemStateChanged
-        if(produtoBox.getSelectedItem().equals("Alimentos")){
-            produtos = "Alimentos";
-        } else if(produtoBox.getSelectedItem().equals("Refrigerantes")){
-            produtos = "Refrigerantes";
-        } else if(produtoBox.getSelectedItem().equals("Sucos")){
-            produtos = "Sucos";
-        } else if(produtoBox.getSelectedItem().equals("Itens de Cozinha")){
-            produtos = "Itens de Cozinha";
-        } else {
-            produtos = " ";
+        try{
+        Connection con = BancoClass.conexaoBanco();
+        String sql = "SELECT * FROM produto WHERE descricao = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setString(1, produtoBox.getSelectedItem().toString());
+        ResultSet rs = stmt.executeQuery();
+        
+        if(rs.next()) {
+            codigo.setText(rs.getString("id_produto"));
+            preco.setText(rs.getString("preco"));
+        }
+        } catch(SQLException ex) {
+            Logger.getLogger(CadVenda.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_produtoBoxItemStateChanged
 
     private void funcionarioBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_funcionarioBoxItemStateChanged
-        if(funcionarioBox.getSelectedItem().equals("@Bárbara")){
-            funcionarios = "@Bárbara";
-        } else if(funcionarioBox.getSelectedItem().equals("@Elaine")){
-            funcionarios = "@Elaine";
-        } else if(funcionarioBox.getSelectedItem().equals("@Jubileu")){
-            funcionarios = "@Jubileu";
-        } else if(funcionarioBox.getSelectedItem().equals("@Oreia Seca")){
-            funcionarios = "@Oreia Seca";
-        } else {
-            funcionarios = " ";
-        }
+        Map<String, String> funcionarioMap = new HashMap<>();
+        funcionarioMap.put("@João Silva", "João Silva");
+        funcionarioMap.put("@Maria Oliveira", "Maria Oliveira");
+        funcionarioMap.put("@Carlos Santos", "Carlos Santos");
+        funcionarioMap.put("@Ana Paula", "Ana Paula");
+        funcionarioMap.put("@Rafael Lima", "Rafael Lima");
+        funcionarioMap.put("@Pedro Santos", "Pedro Santos");
+        funcionarioMap.put("@Roberto Lima", "Roberto Lima");
+    
+    funcionarios = funcionarioMap.getOrDefault(funcionarioBox.getSelectedItem(), " ");
     }//GEN-LAST:event_funcionarioBoxItemStateChanged
 
     private void clienteBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_clienteBoxItemStateChanged
-        if(clienteBox.getSelectedItem().equals("Douglas")){
-            clientes = "Douglas";
-        } else if(clienteBox.getSelectedItem().equals("Raphael")){
-            clientes = "Raphel";
-        } else if(clienteBox.getSelectedItem().equals("Ruan")){
-            clientes = "Ruan";
-        } else if(clienteBox.getSelectedItem().equals("Talisson")){
-            clientes = "Talisson";
-        } else {
-            clientes = " ";
-        }
+        Map<String, String> clienteMap = new HashMap<>();
+        clienteMap.put("Fernanda Rocha", "Fernanda Rocha");
+        clienteMap.put("Marina Dias", "Marina Dias");
+        clienteMap.put("Ricardo Pinto", "Ricardo Pinto");
+        clienteMap.put("Juliana Martins", "Juliana Martins");
+        clienteMap.put("Fábio Nascimento", "Fábio Nascimento");
+
+        clientes = clienteMap.getOrDefault(clienteBox.getSelectedItem(), " ");
     }//GEN-LAST:event_clienteBoxItemStateChanged
 
     private void btnFinalizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnFinalizarMouseClicked
         try {
-            Connection con = BancoClass.conexaoBanco();
-            String sql = "UPDATE venda SET situacao = 'F', valor_total = ? WHERE id_venda = ?";
-            PreparedStatement stmt = con.prepareStatement(sql);
-            DefaultTableModel tabelaModelo = (DefaultTableModel) table.getModel();
-            double total = 0.0;
-            for (int i = 0; i < tabelaModelo.getRowCount(); i++) {
-                total += Double.parseDouble(tabelaModelo.getValueAt(i, 4).toString());
-            }
-            stmt.setDouble(1, total);
-            stmt.setString(2, id_vendas);
-            stmt.executeUpdate();
+        Connection con = BancoClass.conexaoBanco();
+        DefaultTableModel tabelaModelo = (DefaultTableModel) table.getModel();
+        double total = 0.0;
+        for (int i = 0; i < tabelaModelo.getRowCount(); i++) {
+            total += Double.parseDouble(tabelaModelo.getValueAt(i, 4).toString());
+        }
+        
+        String sql = "UPDATE venda SET situacao = 'F', valor_total = ? WHERE id_venda = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        stmt.setDouble(1, total);
+        stmt.setString(2, id_vendas);
+        stmt.executeUpdate();
 
-            totVenda.setText(String.format("%.2f", total));
-            JOptionPane.showMessageDialog(this, "Venda finalizada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+        totVenda.setText(String.format("%.2f", total));
+        JOptionPane.showMessageDialog(this, "Venda finalizada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 
-            stmt.close();
-            con.close();
+        stmt.close();
+        con.close();
         } catch (SQLException ex) {
             Logger.getLogger(CadVenda.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, "Erro ao finalizar a venda.", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -372,7 +383,7 @@ public class CadVenda extends javax.swing.JInternalFrame {
             Connection con = BancoClass.conexaoBanco();
             String sql = "UPDATE venda SET situacao = 'S' WHERE id_venda = ?";
             PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setString(1, id_vendas);
+            stmt.setString(1, id_vendas); // Use the correct sale ID (id_vendas)
             stmt.executeUpdate();
 
             JOptionPane.showMessageDialog(this, "Venda cancelada com sucesso.", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
@@ -401,9 +412,9 @@ public class CadVenda extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnCancelarVenda;
     private javax.swing.JButton btnFinalizar;
     private javax.swing.JComboBox<String> clienteBox;
+    private javax.swing.JTextField codigo;
     private javax.swing.JTextField cupom;
     private javax.swing.JComboBox<String> funcionarioBox;
-    private javax.swing.JTextField id_venda;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
