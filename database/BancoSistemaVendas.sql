@@ -313,6 +313,8 @@ SELECT * FROM item_venda;
 SELECT * FROM venda;
 SELECT * FROM tb_item_venda;
 
+SELECT * FROM tb_item_venda WHERE codigo = 1;
+
 SELECT * FROM categoria ORDER BY id_categoria DESC;
 
 CREATE VIEW tb_item_venda AS
@@ -331,4 +333,4 @@ INNER JOIN cliente c ON c.id_cliente = v.id_cliente
 INNER JOIN pessoa pc ON pc.id_pessoa = c.id_pessoa 
 INNER JOIN atendente a ON a.id_atendente = v.id_atendente 
 INNER JOIN pessoa pa ON pa.id_pessoa = a.id_pessoa 
-INNER JOIN produto pr ON pr.id_produto = iv.id_produto
+INNER JOIN produto pr ON pr.id_produto = iv.id_produto;
